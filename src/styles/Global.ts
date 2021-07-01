@@ -65,6 +65,14 @@ export const GlobalStyle = createGlobalStyle`
         position: relative;
         padding: 3rem;
         border-radius: 0.25rem;
+        
+        .save-button{
+            background: transparent;
+            color: red;
+            &:hover{
+                filter: brightness(0.9);
+            }
+        }
     }
     .modal-close{
         position: absolute;

@@ -4,7 +4,8 @@ import { useState } from "react";
 
 import closeImg from '../../assets/close.svg'
 import api from "../../services/api";
-// import { AiFillStar } from 'react-icons/ai'
+import { AiOutlineHeart, AiFillHeart } from 'react-icons/ai'
+import { useFavoriteCaracter } from "../../hooks/useFavoriteCaracter";
 
 type CardProps = {
     id: number;
@@ -22,14 +23,18 @@ type CaracterInfo = {
     status: string
 }
 
+
+
 export function Card({ id, image, name, gender, status }: CardProps) {
+    const { handleAddFovoriteCaracter, favorite } = useFavoriteCaracter()
     const [isCaracterModalOpen, setIsCaracterModalOpen] = useState(false)
     const [caracterInfo, setCaracterInfo] = useState<CaracterInfo>()
+
 
     async function handleOpenCaracterModal(id: number) {
         setIsCaracterModalOpen(true)
         try {
-            const response = await api.get(`${id}`)
+            const response = await api.get(`/${id}`)
             const caracterInfo = response.data
             setCaracterInfo(caracterInfo)
 
@@ -41,6 +46,8 @@ export function Card({ id, image, name, gender, status }: CardProps) {
     function handleCloseCaracterModal() {
         setIsCaracterModalOpen(false)
     }
+
+
     return (
         <>
             <Container>
@@ -50,7 +57,7 @@ export function Card({ id, image, name, gender, status }: CardProps) {
                     <h3>Sexo: {gender === 'Male' ? 'Masculino' : 'Feminino'}</h3>
                     <h3>Status: {status}</h3>
                 </div>
-                {/* <AiFillStar size={20} color={"orange"} /> */}
+                <AiOutlineHeart size={20} color={"orange"} />
                 <button
                     onClick={() => handleOpenCaracterModal(id)}
                 >
@@ -71,6 +78,13 @@ export function Card({ id, image, name, gender, status }: CardProps) {
                 <h2>{caracterInfo?.name}</h2>
                 <h2>{caracterInfo?.gender}</h2>
                 <h2>{caracterInfo?.status}</h2>
+
+
+                <button className="save-button" onClick={(() => handleAddFovoriteCaracter(id))}>
+                    {favorite.findIndex(data => data.id === id) >= 0 ? <AiFillHeart size={20} color={"red"} /> : <AiOutlineHeart size={20} color={"red"} />}
+                </button>
+
+
             </Modal>
         </>
 

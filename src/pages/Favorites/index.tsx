@@ -1,48 +1,26 @@
-// import { Card } from "../../components/Card";
-import { AiFillStar } from 'react-icons/ai'
-import { Container } from "../../components/Card/styles";
-import { Data } from "./styles";
 
+import { Data } from "./styles";
+import { Card } from '../../components/Card';
+import { useFavoriteCaracter } from "../../hooks/useFavoriteCaracter";
+import { Link } from "react-router-dom";
+import portalGif from '../../assets/portal.gif'
 
 
 export function Favorites() {
+    const { favorite } = useFavoriteCaracter()
+    console.log(favorite)
     return (
         <>
             <Data>
 
-                <h1>Seus Favoritos</h1>
+                <header>
+                    <h1>Seus Favoritos</h1>
+                    <Link to="/" ><img src={portalGif} alt="Voltar" /></Link>
+                </header>
                 <div>
-                    <Container>
-                        <img src="https://rickandmortyapi.com/api/character/avatar/2.jpeg" alt="Morty" />
-                        <div>
-                            <h3>Nome: Morty Smith</h3>
-                            <h3>Sexo: Masculino</h3>
-                            <h3>Status: Vivo</h3>
-                        </div>
-                        <AiFillStar size={20} color={"orange"} />
-                    </Container>
-                    <Container>
-                        <img src="https://rickandmortyapi.com/api/character/avatar/2.jpeg" alt="Morty" />
-                        <div>
-                            <h3>Nome: Morty Smith</h3>
-                            <h3>Sexo: Masculino</h3>
-                            <h3>Status: Vivo</h3>
-                        </div>
-                        <AiFillStar size={20} color={"orange"} />
-                    </Container>
-                    <Container>
-                        <img src="https://rickandmortyapi.com/api/character/avatar/2.jpeg" alt="Morty" />
-                        <div>
-                            <h3>Nome: Morty Smith</h3>
-                            <h3>Sexo: Masculino</h3>
-                            <h3>Status: Vivo</h3>
-                        </div>
-                        <AiFillStar size={20} color={"orange"} />
-                    </Container>
+                    {favorite.map(data => (<Card key={data.id} id={data.id} image={data.image} name={data.name} gender={data.gender} status={data.status} />))}
                 </div>
             </Data>
-
-
 
         </>
     )
