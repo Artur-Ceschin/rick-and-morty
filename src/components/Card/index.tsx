@@ -7,28 +7,23 @@ import api from "../../services/api";
 import { AiOutlineHeart, AiFillHeart } from 'react-icons/ai'
 import { useFavoriteCaracter } from "../../hooks/useFavoriteCaracter";
 
-type CardProps = {
+type CardProps = Omit<CardInfo, 'location'>
+
+type CardInfo = {
     id: number;
     image: string;
     name: string;
-    gender: string
-    status: string
+    gender: string;
+    status: string;
+    location: {
+        name: string
+    }
 }
-
-type CaracterInfo = {
-    id: number;
-    image: string;
-    name: string;
-    gender: string
-    status: string
-}
-
-
 
 export function Card({ id, image, name, gender, status }: CardProps) {
     const { handleAddFovoriteCaracter, favorite } = useFavoriteCaracter()
     const [isCaracterModalOpen, setIsCaracterModalOpen] = useState(false)
-    const [caracterInfo, setCaracterInfo] = useState<CaracterInfo>()
+    const [caracterInfo, setCaracterInfo] = useState<CardInfo>()
 
 
     async function handleOpenCaracterModal(id: number) {
@@ -52,12 +47,10 @@ export function Card({ id, image, name, gender, status }: CardProps) {
         <>
             <Container>
                 <img src={image} alt={name} />
-                <div>
+                <aside>
                     <h3>Nome: {name}</h3>
                     <h3>Sexo: {gender === 'Male' ? 'Masculino' : 'Feminino'}</h3>
-                    <h3>Status: {status}</h3>
-                </div>
-                <AiOutlineHeart size={20} color={"orange"} />
+                </aside>
                 <button
                     onClick={() => handleOpenCaracterModal(id)}
                 >
@@ -74,14 +67,17 @@ export function Card({ id, image, name, gender, status }: CardProps) {
                 <button type="button" onClick={handleCloseCaracterModal} className="modal-close">
                     <img src={closeImg} alt="Fechar modal" />
                 </button>
-                <img src={caracterInfo?.image} alt={caracterInfo?.name} />
-                <h2>{caracterInfo?.name}</h2>
-                <h2>{caracterInfo?.gender}</h2>
-                <h2>{caracterInfo?.status}</h2>
+                <div className="modal-info">
+                    <img src={caracterInfo?.image} alt={caracterInfo?.name} />
+                    <h2>Nome: <span>{caracterInfo?.name}</span></h2>
+                    <h2>Gênero: <span>{caracterInfo?.gender === 'Male' ? 'Masculino' : 'Feminino'}</span></h2>
+                    <h2>Status: <span>{caracterInfo?.status === "Dead" ? "Morto" : "Vivo"}</span></h2>
+                    <h2>Última localização: <span>{caracterInfo?.location.name}</span></h2>
+                </div>
 
 
                 <button className="save-button" onClick={(() => handleAddFovoriteCaracter(id))}>
-                    {favorite.findIndex(data => data.id === id) >= 0 ? <AiFillHeart size={20} color={"red"} /> : <AiOutlineHeart size={20} color={"red"} />}
+                    {favorite.findIndex(data => data.id === id) >= 0 ? <AiFillHeart size={35} color={"red"} /> : <AiOutlineHeart size={35} color={"red"} />}
                 </button>
 
 

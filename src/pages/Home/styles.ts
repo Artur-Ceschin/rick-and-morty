@@ -43,15 +43,43 @@ export const Header = styled.header`
     }
     a{
         text-decoration: none
-
     }
+
+    @media (max-width:800px) {
+        display: flex;
+        flex-direction: column;
+        > div{
+            display: flex;
+            flex-direction:column;
+            img{
+                width: 150px;
+            }
+        }
+    }
+
+
+`
+
+export const Loading = styled.div`
+    width: 100px;
+    display: block;
+    margin: 0 auto;
+    text-align: center;
 `
 
 export const Container = styled.div`
-    background-color: var(--body);
-    /* width: 100%; */
+
+    position: relative;
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: repeat(3, 1fr);
+    background-color: var(--body);
+    justify-items: center;
+
+    @media (max-width:800px) {
+        padding: 0 32px;
+        display: grid;
+        grid-template-columns: 1fr;
+    }
 
 `
 

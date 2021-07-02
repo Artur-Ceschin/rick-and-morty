@@ -1,38 +1,42 @@
 import styled from "styled-components";
 
-// interface RadioBoxProps {
-//     isActive: boolean;
-//     activeColor: 'green' | 'red';
-// }
-
-// const colors = {
-//     green: '#49AA26',
-//     red: '#E92929'
-// }
 
 export const Container = styled.div`
+    background: white;
+    border-radius: 8 0 0 8px;
+    margin: 2rem;
+    width: 400px;
     display: flex;
-    background-color: var(--card-background);
+    flex-direction:column;
+    align-items: center;
     border-radius: 8px;
-    margin: 20px;
+    padding: 32px;
     gap: 20px;
-    box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.6);
+
     transition: transform 0.4s;
-    cursor: pointer;
+
     &:hover{
-            transform: translateY(-10px);
-        }
+        transform: translateY(-10px);
+    }
+
     img{
         width: 150px;
         height: 150px;
         border-radius: 8px 0 0 8px;
     }
-    h3{ 
-        color: white;
+    
+    button{
+        background-color: white;
+        color: var(--green);
+        font-size: 1.2rem;
+        font-weight: bold;
     }
 
-    svg{
-        
+    @media (max-width:800px) {
+        width: 300px;
+        margin: 0 auto;
+        margin-top: 1rem;
     }
+
 
  `

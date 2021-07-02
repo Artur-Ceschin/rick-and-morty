@@ -1,12 +1,14 @@
 
-import { FormEvent, useState } from 'react'
+import { FormEvent, useEffect, useState } from 'react'
 
-import { Header, Container, Error } from './styles'
+import { Header, Container, Error, Loading } from './styles'
 import rickAndMortyImg from '../../assets/rick-and-morty.png'
 import portalGif from '../../assets/portal.gif'
 import { Link } from 'react-router-dom'
 import { Card } from '../../components/Card'
 import api from '../../services/api'
+import { Footer } from '../../components/Footer'
+import ReactLoading from 'react-loading';
 
 type Caracters = {
     id: number;
@@ -17,29 +19,37 @@ type Caracters = {
 }
 
 export function Home() {
-    const [newCaracter, setNewCaracter] = useState('')
-    const [inputError, setInputError] = useState('')
     const [caracters, setCaracters] = useState<Caracters[]>([])
+    const [newCaracter, setNewCaracter] = useState('')
+    const [query, setQuery] = useState('')
+    const [inputError, setInputError] = useState('')
+    const [loading, setLoading] = useState(false)
 
-    async function handleSearchCaracter(e: FormEvent<HTMLFormElement>): Promise<void> {
-        e.preventDefault();
+    useEffect(() => {
+        getCaracter();
+        setLoading(true)
+    }, [query])
 
-        if (!newCaracter) {
-            setInputError('Digite o nome do personagem')
-            return
-        }
-
+    async function getCaracter() {
         try {
-            const response = await api.get(`/?name=${newCaracter}`)
+            const response = await api.get(`/?name=${query}`)
             const caracter = response.data.results
             console.log(caracter)
             setCaracters(caracter)
             setNewCaracter('')
             setInputError('')
+            setLoading(false)
+
         } catch (err) {
-            setInputError('Erro na busca por personagem')
+            setInputError('Personagem não existe')
         }
     }
+
+    function handleSearchCaracter(e: FormEvent<HTMLFormElement>) {
+        e.preventDefault();
+        setQuery(newCaracter)
+    }
+
     return (
         <>
             <Header>
@@ -64,10 +74,19 @@ export function Home() {
 
                 {inputError && <Error>{inputError}</Error>}
             </Header>
+            <Loading>
+
+                {loading && <ReactLoading type={"spin"} color={'#149eb6'} height={100} width={100} />}
+
+
+            </Loading>
 
             <Container>
-                {caracters.map(caracter => (<Card key={caracter.id} id={caracter.id} image={caracter.image} name={caracter.name} gender={caracter.gender} status={caracter.status} />))}
+
+                {!loading && caracters.map(caracter => (<Card key={caracter.id} id={caracter.id} image={caracter.image} name={caracter.name} gender={caracter.gender} status={caracter.status} />))}
             </Container>
+
+            <Footer />
 
         </>
     )

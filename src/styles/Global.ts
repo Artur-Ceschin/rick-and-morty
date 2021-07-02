@@ -18,16 +18,21 @@ export const GlobalStyle = createGlobalStyle`
         box-sizing: border-box;
     }
     html{
+        height: 100%;
+        min-height: 100%;
         @media (max-width: 1080px) {
             font-size: 93.75%;//15px
         } 
         @media(max-width: 720px) {
-            font-size: 87.5%;//14px
+            font-size: 85.5%;//12px
         }  
     }
     body{
         background-color: var(--background);
         -webkit-font-smoothing: antialiased;
+        display: flex;
+        flex-direction: column;
+        min-height: 100%;
     }
     body, input, textarea, button,select, option{
         font-family: 'Poppins', sans-serif;
@@ -65,10 +70,23 @@ export const GlobalStyle = createGlobalStyle`
         position: relative;
         padding: 3rem;
         border-radius: 0.25rem;
-        
+
+        .modal-info{
+
+            h2{
+                span{
+                    color: var(--button)
+                }
+            }
+        }
+
+
         .save-button{
+            display: block;
+            margin: 0 auto;
             background: transparent;
             color: red;
+            margin-top: 1rem;
             &:hover{
                 filter: brightness(0.9);
             }
